@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FinanceToolsHub — Free SIP Calculators, Stock Market Advice & Personal Finance Blogs</title>
+  
+  <meta name="description" content="Calculate returns of Systematic Investment Plans (SIP) with annual step-ups, model loan prepayments, plan retirement with FIRE metrics, and read expert stock market advice and finance blogs on FinanceToolsHub.">
+  <meta name="keywords" content="financial calculators, SIP calculator, step-up SIP, EMI calculator, prepayments, retirement planner, FIRE calculator, compound interest, stock market advice, personal finance blogs, index funds">
+  <meta name="author" content="FinanceToolsHub Team">
+  <link rel="canonical" href="https://financetoolshub.com">
+  <meta name="theme-color" content="#f8fafc">
+  
+  <!-- OpenGraph Metadata for beautiful social media shares (Facebook, WhatsApp, LinkedIn) -->
+  <meta property="og:title" content="FinanceToolsHub — Free SIP Calculators, Stock Market Advice & Finance Blogs">
+  <meta property="og:description" content="Calculate advanced SIP returns, loan prepayments, retirement metrics, and read expert stock market guides in one premium, light-themed visual dashboard.">
+  <meta property="og:image" content="https://financetoolshub.com/assets/hero.png">
+  <meta property="og:url" content="https://financetoolshub.com">
+  <meta property="og:type" content="website">
+  
+  <!-- Twitter Card Metadata -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="FinanceToolsHub — Premium Financial Calculators & Stock Advice">
+  <meta name="twitter:description" content="Unlock advanced wealth calculations and expert market advice in a premium interactive light-themed portal.">
+  <meta name="twitter:image" content="https://financetoolshub.com/assets/hero.png">
+  
+  <!-- Google Structured Data (JSON-LD Schema Markup) for rich Google Search Snippets -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "FinanceToolsHub",
+    "url": "https://financetoolshub.com",
+    "description": "Premium personal finance tools, advanced calculators, stock market advice, and educational finance blogs.",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://financetoolshub.com/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "FinanceToolsHub",
+    "url": "https://financetoolshub.com",
+    "logo": "https://financetoolshub.com/assets/logo.png",
+    "sameAs": [
+      "https://twitter.com/financetoolshub",
+      "https://github.com/financetoolshub"
+    ]
+  }
+  </script>
+  
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Chart.js for gorgeous interactive data visualizations -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- Sticky Top Navigation Shell -->
+  <header class="top-nav">
+    <div class="nav-brand" onclick="app.navigatePortal('home')" title="Go to FinanceToolsHub Home">
+      <div class="brand-logo">F</div>
+      <span class="brand-name">FinanceToolsHub</span>
+    </div>
+    
+    <nav>
+      <ul class="nav-links">
+        <li><button class="nav-link-btn active" id="port-nav-home" onclick="app.navigatePortal('home')">Home</button></li>
+        <li><button class="nav-link-btn" id="port-nav-calculators" onclick="app.navigatePortal('calculators')">Calculators Hub</button></li>
+        <li><button class="nav-link-btn" id="port-nav-insights" onclick="app.navigatePortal('insights')">Market Insights</button></li>
+      </ul>
+    </nav>
+    
+    <div class="nav-right-controls">
+      <div class="currency-selector-nav">
+        <span class="currency-label">Currency</span>
+        <select id="global-currency" class="currency-select" onchange="app.setCurrency(this.value)">
+          <option value="USD">USD ($)</option>
+          <option value="INR" selected>INR (₹)</option>
+          <option value="EUR">EUR (€)</option>
+          <option value="GBP">GBP (£)</option>
+          <option value="JPY">JPY (¥)</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Wrapper -->
+  <main class="main-wrapper">
+    
+    <!-- ============================================== -->
+    <!-- I. PORTAL VIEW: HOME LANDING PAGE -->
+    <!-- ============================================== -->
+    <section id="portal-view-home" class="portal-view-container active">
+      
+      <!-- Hero Section -->
+      <div class="hero-section">
+        <div class="hero-content">
+          <div class="hero-tag">🎯 Financial Literacy & Planning</div>
+          <h1 class="hero-title">Master Your Wealth & Financial Goals</h1>
+          <p class="hero-description">Welcome to <strong>FinanceToolsHub</strong>—your premium portal for financial planning. Calculate long-term SIP returns, adjust for inflation, optimize debt prepayments, simulate early retirement (FIRE), and read professional stock market advice to build lasting wealth.</p>
+          <div class="hero-buttons">
+            <button class="btn btn-primary" onclick="app.navigatePortal('calculators')" title="Open Interactive Calculators">Launch Calculators Hub</button>
+            <button class="btn btn-secondary" onclick="app.navigatePortal('insights')" title="Read Finance Blogs">Explore Market Advice</button>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <img src="assets/hero.png" alt="FinanceToolsHub - Premium Financial Analytics Dashboard illustration" title="Premium Financial Analytics Dashboard">
+        </div>
+      </div>
+      
+      <!-- Homepage Compound Growth Quick Previewer Widget -->
+      <div class="interactive-section">
+        <div class="home-section-title-row">
+          <span class="section-subtitle">Growth Previewer</span>
+          <h2 class="section-main-title">See the Unfair Power of Compounding</h2>
+        </div>
+        
+        <div class="growth-preview-card">
+          <div class="inputs-panel">
+            <div class="form-group">
+              <span class="form-label">How much can you save monthly?</span>
+              <div class="form-input-container">
+                <span class="currency-prefix">₹</span>
+                <input type="number" id="home-growth-amount" class="form-input" value="10000" min="500" step="500" oninput="app.syncHomeGrowth('input')">
+              </div>
+              <div class="range-slider-container">
+                <input type="range" id="home-growth-range" class="range-slider" min="1000" max="100000" value="10000" step="500" oninput="app.syncHomeGrowth('slider')">
+              </div>
+            </div>
+            <p class="card-description" style="margin-bottom: 0;">Compounded at <strong>12% annual returns</strong> over <strong>15 years</strong> with a modest <strong>10% annual Step-Up</strong>.</p>
+          </div>
+          
+          <div class="growth-payout-box">
+            <span class="stat-label" style="text-transform: uppercase;">Maturity Wealth Projection</span>
+            <div class="growth-payout-amount" id="home-growth-maturity">₹50,45,761</div>
+            <span class="stat-label" style="margin-top: 1rem;">Maturity values scale instantly! Click below to customize compound frequencies, inflation adjustments, and timelines.</span>
+            <button class="card-btn" style="margin-top: 1.5rem; justify-content: center;" onclick="app.navigatePortal('calculators')">Customize in Full Planner &rarr;</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Core Pillar Services Section -->
+      <div class="interactive-section">
+        <div class="home-section-title-row">
+          <span class="section-subtitle">What We Offer</span>
+          <h2 class="section-main-title">Professional Financial Ecosystem</h2>
+        </div>
+        
+        <div class="services-grid">
+          <div class="service-card">
+            <div class="service-icon icon-blue">📊</div>
+            <h3 class="service-title">Interactive Calculators</h3>
+            <p class="service-desc">Simulate complex financial situations in 2 seconds. Features step-up compounding, amortization prepayment simulations, safe withdrawal curves, and 50/30/20 guidelines.</p>
+            <button class="card-btn" onclick="app.navigatePortal('calculators')">Open Tools &rarr;</button>
+          </div>
+          
+          <div class="service-card">
+            <div class="service-icon icon-emerald">📈</div>
+            <h3 class="service-title">Stock Market Advice</h3>
+            <p class="service-desc">Demystify investing in index funds, dividend compounders, and stocks. Learn safe portfolio diversification metrics and asset capitalization methods from experts.</p>
+            <button class="card-btn" onclick="app.navigatePortal('insights')">Read Advice &rarr;</button>
+          </div>
+          
+          <div class="service-card">
+            <div class="service-icon icon-accent">💡</div>
+            <h3 class="service-title">Financial Literacy Blogs</h3>
+            <p class="service-desc">Read high-quality articles addressing personal finance, taxation, early retirement dynamics, step-ups, debt snowballs, and budgeting methodologies.</p>
+            <button class="card-btn" onclick="app.navigatePortal('insights')">Read Blogs &rarr;</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Trending Articles Grid (Home Preview) -->
+      <div class="interactive-section">
+        <div class="blog-deck-title-row">
+          <div>
+            <span class="section-subtitle">Market Insights</span>
+            <h2 class="section-main-title">Latest Financial Intelligence</h2>
+          </div>
+          <button class="btn btn-secondary" onclick="app.navigatePortal('insights')">View All Articles &rarr;</button>
+        </div>
+        
+        <div class="blog-grid" id="home-blog-grid">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+      
+    </section>
+
+    <!-- ============================================== -->
+    <!-- II. PORTAL VIEW: CALCULATORS HUB PAGE -->
+    <!-- ============================================== -->
+    <section id="portal-view-calculators" class="portal-view-container">
+      
+      <!-- Calculator Main Page Grid selector -->
+      <div class="calculators-dashboard-view">
+        
+        <!-- Left Sidebar Navigator for calculators inside the page context -->
+        <div class="segment-control" style="max-width: 900px; margin: 0 auto 2rem auto; padding: 0.35rem;">
+          <button class="segment-btn active" id="tab-btn-sip" onclick="app.switchCalculator('sip')">SIP & Lumpsum</button>
+          <button class="segment-btn" id="tab-btn-loan" onclick="app.switchCalculator('loan')">EMI & Prepayments</button>
+          <button class="segment-btn" id="tab-btn-fire" onclick="app.switchCalculator('fire')">FIRE & Retirement</button>
+          <button class="segment-btn" id="tab-btn-budget" onclick="app.switchCalculator('budget')">50/30/20 Budget</button>
+          <button class="segment-btn" id="tab-btn-compound" onclick="app.switchCalculator('compound')">Compound Interest</button>
+        </div>
+        
+        <!-- 1. SIP CALCULATOR SUB-VIEW -->
+        <div id="view-sip" class="calculator-view active">
+          <div class="calc-layout">
+            <div class="inputs-panel glass-card">
+              <div class="form-group">
+                <span class="form-label">Investment Profile</span>
+                <div class="form-input-container">
+                  <select id="sip-type" class="form-select" onchange="app.updateSIP()">
+                    <option value="sip" selected>Systematic Investment Plan (SIP)</option>
+                    <option value="lumpsum">One-time Lumpsum Investment</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <span class="form-label" id="sip-amount-label">Monthly Investment</span>
+                <div class="form-input-container">
+                  <span class="currency-prefix">₹</span>
+                  <input type="number" id="sip-amount" class="form-input" value="10000" min="1" step="10" oninput="app.syncSIP('amount')">
+                </div>
+                <div class="range-slider-container">
+                  <input type="range" id="sip-amount-range" class="range-slider" min="1000" max="200000" value="10000" step="500" oninput="app.syncSIP('amount-range')">
+                </div>
+              </div>
+              <div class="form-group">
+                <span class="form-label">Expected Return Rate</span>
+                <div class="form-input-container">
+                  <input type="number" id="sip-rate" class="form-input" value="12" min="1" max="30" step="0.5" oninput="app.syncSIP('rate')">
+                  <span class="form-suffix">% p.a.</span>
+                </div>
+                <div class="range-slider-container">
+                  <input type="range" id="sip-rate-range" class="range-slider" min="1" max="30" value="12" step="0.5" oninput="app.syncSIP('rate-range')">
+                </div>
+              </div>
+              <div class="form-group">
+                <span class="form-label">Time Period</span>
+                <div class="form-input-container">
+                  <input type="number" id="sip-tenure" class="form-input" value="15" min="1" max="40" step="1" oninput="app.syncSIP('tenure')">
+                  <span class="form-suffix">Years</span>
+                </div>
+                <div class="range-slider-container">
+                  <input type="range" id="sip-tenure-range" class="range-slider" min="1" max="40" value="15" step="1" oninput="app.syncSIP('tenure-range')">
+                </div>
+              </div>
+              <div>
+                <button class="advanced-toggle-btn" id="sip-adv-toggle" onclick="app.toggleAdvanced('sip')">
+                  <span>Show Advanced Parameters (Step-Up & Inflation)</span>
+                  <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="advanced-panel" id="sip-adv-panel">
+                  <div class="form-group">
+                    <span class="form-label">Annual Contribution Step-Up</span>
+                    <div class="form-input-container">
+                      <input type="number" id="sip-stepup" class="form-input" value="0" min="0" max="50" step="1" oninput="app.syncSIP('stepup')">
+                      <span class="form-suffix">% per Year</span>
+                    </div>
+                    <div class="range-slider-container">
+                      <input type="range" id="sip-stepup-range" class="range-slider" min="0" max="50" value="0" step="1" oninput="app.syncSIP('stepup-range')">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <span class="form-label">Expected Annual Inflation</span>
+                    <div class="form-input-container">
+                      <input type="number" id="sip-inflation" class="form-input" value="0" min="0" max="15" step="0.5" oninput="app.syncSIP('inflation')">
+                      <span class="form-suffix">% per Year</span>
+                    </div>
+                    <div class="range-slider-container">
+                      <input type="range" id="sip-inflation-range" class="range-slider" min="0" max="15" value="0" step="0.5" oninput="app.syncSIP('inflation-range')">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="results-panel">
+              <div class="glass-card">
+                <div class="stats-grid">
+                  <div class="stat-item">
+                    <div class="stat-label">Total Invested</div>
+                    <div class="stat-value" id="sip-res-invested">₹0</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-label">Estimated Returns</div>
+                    <div class="stat-value" id="sip-res-interest">₹0</div>
+                  </div>
+                  <div class="stat-item featured">
+                    <div class="stat-label">Future Maturity Value</div>
+                    <div class="stat-value" id="sip-res-total">₹0</div>
+                  </div>
+                  <div class="stat-item" id="sip-inflation-block" style="grid-column: span 2; display: none; background: rgba(217, 119, 6, 0.05); border-color: rgba(217, 119, 6, 0.2);">
+                    <div class="stat-label" style="color: var(--warning);">Future Value (Inflation Adjusted)</div>
+                    <div class="stat-value" id="sip-res-adjusted" style="font-size: 1.6rem; color: var(--warning);">₹0</div>
+                  </div>
+                </div>
+                <div class="chart-container">
+                  <canvas id="sip-chart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="glass-card table-card">
+            <div class="table-header-row">
+              <h4 class="table-title">Year-on-Year Growth Projection</h4>
+            </div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Year</th>
+                    <th class="text-right">Invested Value</th>
+                    <th class="text-right">Interest Gained</th>
+                    <th class="text-right">Total Wealth</th>
+                    <th class="text-right" id="sip-table-inflation-header" style="display: none;">Real Value (Inflation Adjusted)</th>
+                  </tr>
+                </thead>
+                <tbody id="sip-table-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 2. LOAN CALCULATOR SUB-VIEW -->
+        <div id="view-loan" class="calculator-view">
+          <div class="calc-layout">
+            <div class="inputs-panel glass-card">
+              <div class="form-group">
+                <span class="form-label">Principal Loan Amount</span>
+                <div class="form-input-container">
+                  <span class="currency-prefix">₹</span>
+                  <input type="number" id="loan-amount" class="form-input" value="5000000" min="1000" step="1000" oninput="app.syncLoan('amount')">
+                </div>
+                <div class="range-slider-container">
+                  <input type="range" id="loan-amount-range" class="range-slider" min="100000" max="20000000" value="5000000" step="100000" oninput="app.syncLoan('amount-range')">
+                </div>
+              </div>
+              <div class="form-group">
+                <span class="form-label">Interest Rate</span>
+                <div class="form-input-container">
+                  <input type="number" id="loan-rate" class="form-input" value="8" min="1" max="20" step="0.1" oninput="app.syncLoan('rate')">
+                  <span class="form-suffix">% p.a.</span>
+                </div>
+                <div class="range-slider-container">
+                  <input type="range" id="loan-rate-range" class="range-slider" min="1" max="20" value="8" step="0.1" oninput="app.syncLoan('rate-range')">
+                </div>
+              </div>
+              <div class="form-group">
+                <span class="form-label">Loan Tenure</span>
+                <div class="form-input-container">
+                  <input type="number" id="loan-tenure" class="form-input" value="15" min="1" max="30" step="1" oninput="app.syncLoan('tenure')">
+                  <span class="form-suffix">Years</span>
+                </div>
+                <div class="range-slider-container">
+                  <input type="range" id="loan-tenure-range" class="range-slider" min="1" max="30" value="15" step="1" oninput="app.syncLoan('tenure-range')">
+                </div>
+              </div>
+              <div>
+                <button class="advanced-toggle-btn" id="loan-adv-toggle" onclick="app.toggleAdvanced('loan')">
+                  <span>Model Extra Prepayments (Accelerate Payoff)</span>
+                  <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="advanced-panel" id="loan-adv-panel">
+                  <div class="form-group">
+                    <span class="form-label">Add Extra Monthly Payment</span>
+                    <div class="form-input-container">
+                      <span class="currency-prefix">₹</span>
+                      <input type="number" id="loan-extra" class="form-input" value="0" min="0" step="50" oninput="app.syncLoan('extra')">
+                      <span class="form-suffix">/ Month</span>
+                    </div>
+                    <div class="range-slider-container">
+                      <input type="range" id="loan-extra-range" class="range-slider" min="0" max="100000" value="0" step="1000" oninput="app.syncLoan('extra-range')">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <span class="form-label">One-Time Lump Prepayment</span>
+                    <div class="form-input-container">
+                      <span class="currency-prefix">₹</span>
+                      <input type="number" id="loan-prepay" class="form-input" value="0" min="0" step="500" oninput="app.syncLoan('prepay')">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <span class="form-label">Prepayment Month Number</span>
+                    <div class="form-input-container">
+                      <input type="number" id="loan-prepay-month" class="form-input" value="12" min="1" max="360" step="1" oninput="app.updateLoan()">
+                      <span class="form-suffix">Month</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="results-panel">
+              <div class="glass-card">
+                <div class="stats-grid">
+                  <div class="stat-item featured">
+                    <div class="stat-label">Monthly EMI Payment</div>
+                    <div class="stat-value" id="loan-res-emi">₹0</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-label">Total Principal</div>
+                    <div class="stat-value" id="loan-res-principal">₹0</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-label">Total Interest Paid</div>
+                    <div class="stat-value" id="loan-res-interest">₹0</div>
+                  </div>
+                  <div class="stat-item" id="loan-savings-time" style="display: none; background: rgba(5, 150, 105, 0.05); border-color: rgba(5, 150, 105, 0.2);">
+                    <div class="stat-label" style="color: var(--success);">Tenure Time Saved</div>
+                    <div class="stat-value" id="loan-res-timesaved" style="font-size: 1.4rem; color: var(--success);">0 Months</div>
+                  </div>
+                  <div class="stat-item" id="loan-savings-interest" style="display: none; background: rgba(5, 150, 105, 0.05); border-color: rgba(5, 150, 105, 0.2);">
+                    <div class="stat-label" style="color: var(--success);">Prepayment Interest Saved</div>
+                    <div class="stat-value" id="loan-res-interestsaved" style="font-size: 1.4rem; color: var(--success);">₹0</div>
+                  </div>
+                </div>
+                <div class="chart-container">
+                  <canvas id="loan-chart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="glass-card table-card">
+            <div class="table-header-row">
+              <h4 class="table-title">Amortization Schedule Plan</h4>
+              <div class="segment-control">
+                <button class="segment-btn active" id="loan-table-btn-year" onclick="app.toggleLoanTableMode('year')">Yearly</button>
+                <button class="segment-btn" id="loan-table-btn-month" onclick="app.toggleLoanTableMode('month')">Monthly</button>
+              </div>
+            </div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead id="loan-table-header"></thead>
+                <tbody id="loan-table-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 3. FIRE RETIREMENT PLANNER SUB-VIEW -->
+        <div id="view-fire" class="calculator-view">
+          <div class="calc-layout">
+            <div class="inputs-panel glass-card">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                  <span class="form-label">Current Age</span>
+                  <div class="form-input-container">
+                    <input type="number" id="fire-age" class="form-input" value="30" min="1" max="100" oninput="app.updateFIRE()">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <span class="form-label">Target Retire Age</span>
+                  <div class="form-input-container">
+                    <input type="number" id="fire-retire-age" class="form-input" value="55" min="1" max="100" oninput="app.updateFIRE()">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <span class="form-label">Current Monthly Expenses</span>
+                <div class="form-input-container">
+                  <span class="currency-prefix">₹</span>
+                  <input type="number" id="fire-expenses" class="form-input" value="50000" min="1" step="100" oninput="app.syncFIRE('expenses')">
+                </div>
+                <div class="range-slider-container">
+                  <input type="range" id="fire-expenses-range" class="range-slider" min="5000" max="500000" value="50000" step="5000" oninput="app.syncFIRE('expenses-range')">
+                </div>
+              </div>
+              <div class="form-group">
+                <span class="form-label">Current Net Savings</span>
+                <div class="form-input-container">
+                  <span class="currency-prefix">₹</span>
+                  <input type="number" id="fire-savings" class="form-input" value="1000000" min="0" step="1000" oninput="app.syncFIRE('savings')">
+                </div>
+                <div class="range-slider-container">
+                  <input type="range" id="fire-savings-range" class="range-slider" min="0" max="20000000" value="1000000" step="50000" oninput="app.syncFIRE('savings-range')">
+                </div>
+              </div>
+              <div class="form-group">
+                <span class="form-label">Annual Savings Addition</span>
+                <div class="form-input-container">
+                  <span class="currency-prefix">₹</span>
+                  <input type="number" id="fire-addition" class="form-input" value="200000" min="0" step="500" oninput="app.syncFIRE('addition')">
+                  <span class="form-suffix">/ Year</span>
+                </div>
+                <div class="range-slider-container">
+                  <input type="range" id="fire-addition-range" class="range-slider" min="0" max="2000000" value="200000" step="10000" oninput="app.syncFIRE('addition-range')">
+                </div>
+              </div>
+              <div>
+                <button class="advanced-toggle-btn" id="fire-adv-toggle" onclick="app.toggleAdvanced('fire')">
+                  <span>Customize Returns, Life Expectancy & Inflation</span>
+                  <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="advanced-panel" id="fire-adv-panel">
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                      <span class="form-label">Pre-Retire Return</span>
+                      <div class="form-input-container">
+                        <input type="number" id="fire-pre-return" class="form-input" value="11" min="1" max="25" step="0.5" oninput="app.updateFIRE()">
+                        <span class="form-suffix">%</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <span class="form-label">Post-Retire Return</span>
+                      <div class="form-input-container">
+                        <input type="number" id="fire-post-return" class="form-input" value="7" min="1" max="25" step="0.5" oninput="app.updateFIRE()">
+                        <span class="form-suffix">%</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                      <span class="form-label">Inflation Rate</span>
+                      <div class="form-input-container">
+                        <input type="number" id="fire-inflation" class="form-input" value="6" min="0" max="15" step="0.5" oninput="app.updateFIRE()">
+                        <span class="form-suffix">%</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <span class="form-label">Life Expectancy</span>
+                      <div class="form-input-container">
+                        <input type="number" id="fire-expectancy" class="form-input" value="85" min="50" max="110" step="1" oninput="app.updateFIRE()">
+                        <span class="form-suffix">Years</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="results-panel">
+              <div class="glass-card">
+                <div class="stats-grid">
+                  <div class="stat-item featured">
+                    <div class="stat-label">Target FIRE Corpus Needed</div>
+                    <div class="stat-value" id="fire-res-target">₹0</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-label">Projected Corpus at Retire</div>
+                    <div class="stat-value" id="fire-res-actual">₹0</div>
+                  </div>
+                  <div class="stat-item" id="fire-status-box" style="grid-column: span 2; background: rgba(5, 150, 105, 0.05); border-color: rgba(5, 150, 105, 0.2);">
+                    <div class="stat-label" id="fire-res-status-label" style="color: var(--success);">Portfolio Sustainability</div>
+                    <div class="stat-value" id="fire-res-status" style="font-size: 1.4rem; color: var(--success);">Sustainable Growth</div>
+                  </div>
+                </div>
+                <div class="chart-container">
+                  <canvas id="fire-chart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="glass-card table-card">
+            <div class="table-header-row">
+              <h4 class="table-title">Full Retirement Lifecycle Curve</h4>
+              <div class="segment-control">
+                <button class="segment-btn active" id="fire-table-btn-acc" onclick="app.toggleFIRETableMode('acc')">Accumulation</button>
+                <button class="segment-btn" id="fire-table-btn-dec" onclick="app.toggleFIRETableMode('dec')">Decumulation</button>
+              </div>
+            </div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead id="fire-table-header"></thead>
+                <tbody id="fire-table-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 4. 50/30/20 BUDGET PLANNER SUB-VIEW -->
+        <div id="view-budget" class="calculator-view">
+          <div class="calc-layout">
+            <div class="inputs-panel glass-card">
+              <div class="form-group">
+                <span class="form-label">Net Monthly Take-Home Income</span>
+                <div class="form-input-container">
+                  <span class="currency-prefix">₹</span>
+                  <input type="number" id="budget-income" class="form-input" value="100000" min="100" step="100" oninput="app.syncBudget('income')">
+                </div>
+                <div class="range-slider-container">
+                  <input type="range" id="budget-income-range" class="range-slider" min="5000" max="1000000" value="100000" step="5000" oninput="app.syncBudget('income-range')">
+                </div>
+              </div>
+              <div class="form-group" style="margin-top: 1rem; border-top: 1px dashed rgba(99, 102, 241, 0.15); padding-top: 1rem;">
+                <span class="form-label" style="color: var(--accent); display: block; margin-bottom: 1rem;">Compare with Actual Expenses (Optional)</span>
+                <div class="form-group">
+                  <span class="form-label">Actual Needs Spending</span>
+                  <div class="form-input-container">
+                    <span class="currency-prefix">₹</span>
+                    <input type="number" id="budget-act-needs" class="form-input" value="0" min="0" step="50" oninput="app.updateBudget()">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <span class="form-label">Actual Wants Spending</span>
+                  <div class="form-input-container">
+                    <span class="currency-prefix">₹</span>
+                    <input type="number" id="budget-act-wants" class="form-input" value="0" min="0" step="50" oninput="app.updateBudget()">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <span class="form-label">Actual Monthly Savings / Debt Payments</span>
+                  <div class="form-input-container">
+                    <span class="currency-prefix">₹</span>
+                    <input type="number" id="budget-act-savings" class="form-input" value="0" min="0" step="50" oninput="app.updateBudget()">
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="results-panel">
+              <div class="glass-card">
+                <div class="chart-container">
+                  <canvas id="budget-chart"></canvas>
+                </div>
+                <div class="budget-progress-container">
+                  <div class="budget-bar-group">
+                    <div class="budget-bar-header">
+                      <span class="budget-bar-name">Needs (50% Target)</span>
+                      <span class="budget-bar-value" id="budget-bar-val-needs">₹0</span>
+                    </div>
+                    <div class="budget-bar-outer">
+                      <div class="budget-bar-inner needs" id="budget-bar-fill-needs" style="width: 50%;"></div>
+                    </div>
+                  </div>
+                  <div class="budget-bar-group">
+                    <div class="budget-bar-header">
+                      <span class="budget-bar-name">Wants (30% Target)</span>
+                      <span class="budget-bar-value" id="budget-bar-val-wants">₹0</span>
+                    </div>
+                    <div class="budget-bar-outer">
+                      <div class="budget-bar-inner wants" id="budget-bar-fill-wants" style="width: 30%;"></div>
+                    </div>
+                  </div>
+                  <div class="budget-bar-group">
+                    <div class="budget-bar-header">
+                      <span class="budget-bar-name">Savings & Debt (20% Target)</span>
+                      <span class="budget-bar-value" id="budget-bar-val-savings">₹0</span>
+                    </div>
+                    <div class="budget-bar-outer">
+                      <div class="budget-bar-inner savings" id="budget-bar-fill-savings" style="width: 20%;"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 5. COMPOUND INTEREST SUB-VIEW -->
+        <div id="view-compound" class="calculator-view">
+          <div class="calc-layout">
+            <div class="inputs-panel glass-card">
+              <div class="form-group">
+                <span class="form-label">Initial Principal Deposit</span>
+                <div class="form-input-container">
+                  <span class="currency-prefix">₹</span>
+                  <input type="number" id="compound-principal" class="form-input" value="500000" min="0" step="500" oninput="app.syncCompound('principal')">
+                </div>
+                <div class="range-slider-container">
+                  <input type="range" id="compound-principal-range" class="range-slider" min="0" max="10000000" value="500000" step="50000" oninput="app.syncCompound('principal-range')">
+                </div>
+              </div>
+              <div class="form-group">
+                <span class="form-label">Additional Monthly Contribution</span>
+                <div class="form-input-container">
+                  <span class="currency-prefix">₹</span>
+                  <input type="number" id="compound-monthly" class="form-input" value="15000" min="0" step="10" oninput="app.syncCompound('monthly')">
+                </div>
+                <div class="range-slider-container">
+                  <input type="range" id="compound-monthly-range" class="range-slider" min="0" max="500000" value="15000" step="5000" oninput="app.syncCompound('monthly-range')">
+                </div>
+              </div>
+              <div class="form-group">
+                <span class="form-label">Annual Interest Rate</span>
+                <div class="form-input-container">
+                  <input type="number" id="compound-rate" class="form-input" value="9" min="1" max="25" step="0.5" oninput="app.syncCompound('rate')">
+                  <span class="form-suffix">% p.a.</span>
+                </div>
+                <div class="range-slider-container">
+                  <input type="range" id="compound-rate-range" class="range-slider" min="1" max="25" value="9" step="0.5" oninput="app.syncCompound('rate-range')">
+                </div>
+              </div>
+              <div class="form-group">
+                <span class="form-label">Investment Duration</span>
+                <div class="form-input-container">
+                  <input type="number" id="compound-tenure" class="form-input" value="10" min="1" max="40" step="1" oninput="app.syncCompound('tenure')">
+                  <span class="form-suffix">Years</span>
+                </div>
+                <div class="range-slider-container">
+                  <input type="range" id="compound-tenure-range" class="range-slider" min="1" max="40" value="10" step="1" oninput="app.syncCompound('tenure-range')">
+                </div>
+              </div>
+              <div class="form-group">
+                <span class="form-label">Compounding Frequency</span>
+                <div class="form-input-container">
+                  <select id="compound-freq" class="form-select" onchange="app.updateCompound()">
+                    <option value="daily">Daily Compounding</option>
+                    <option value="monthly" selected>Monthly Compounding</option>
+                    <option value="quarterly">Quarterly Compounding</option>
+                    <option value="annually">Annually Compounding</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            
+            <div class="results-panel">
+              <div class="glass-card">
+                <div class="stats-grid">
+                  <div class="stat-item">
+                    <div class="stat-label">Total Contributions</div>
+                    <div class="stat-value" id="comp-res-invested">₹0</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-label">Compound Interest Gained</div>
+                    <div class="stat-value" id="comp-res-interest">₹0</div>
+                  </div>
+                  <div class="stat-item featured">
+                    <div class="stat-label">Future Growth Balance</div>
+                    <div class="stat-value" id="comp-res-total">₹0</div>
+                  </div>
+                </div>
+                <div class="chart-container">
+                  <canvas id="compound-chart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="glass-card table-card">
+            <div class="table-header-row">
+              <h4 class="table-title">Annual Compounding Path</h4>
+            </div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Year</th>
+                    <th class="text-right">Cumulative Principal</th>
+                    <th class="text-right">Interest Gained</th>
+                    <th class="text-right">Future Wealth</th>
+                  </tr>
+                </thead>
+                <tbody id="compound-table-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
+    </section>
+
+    <!-- ============================================== -->
+    <!-- III. PORTAL VIEW: MARKET INSIGHTS (BLOG) -->
+    <!-- ============================================== -->
+    <section id="portal-view-insights" class="portal-view-container">
+      
+      <div class="home-section-title-row" style="text-align: left; margin-bottom: 3rem;">
+        <span class="section-subtitle">Finance Blogs & Stock Advice</span>
+        <h2 class="section-main-title">Expert Stock Market Advice & Guides</h2>
+      </div>
+      
+      <div class="blog-grid" id="full-blog-grid">
+        <!-- Dynamically populated in JS -->
+      </div>
+      
+    </section>
+
+    <!-- Portal Footer -->
+    <footer class="portal-footer">
+      <div class="footer-top">
+        <div class="footer-about">
+          <div class="nav-brand" onclick="app.navigatePortal('home')">
+            <div class="brand-logo">F</div>
+            <span class="brand-name" style="font-size: 1.25rem;">FinanceToolsHub</span>
+          </div>
+          <p class="footer-about-desc">FinanceToolsHub is a state-of-the-art global financial portal. We design high-fidelity calculators, share practical stock market advice, and write educational blogs to elevate personal financial planning globally.</p>
+        </div>
+        <div class="footer-nav-col">
+          <span class="footer-col-title">Calculators</span>
+          <ul class="footer-links">
+            <li class="footer-link-item"><a href="#" onclick="event.preventDefault(); app.navigatePortal('calculators'); app.switchCalculator('sip');">SIP Compounding</a></li>
+            <li class="footer-link-item"><a href="#" onclick="event.preventDefault(); app.navigatePortal('calculators'); app.switchCalculator('loan');">Amortization Planner</a></li>
+            <li class="footer-link-item"><a href="#" onclick="event.preventDefault(); app.navigatePortal('calculators'); app.switchCalculator('fire');">FIRE Retirement</a></li>
+            <li class="footer-link-item"><a href="#" onclick="event.preventDefault(); app.navigatePortal('calculators'); app.switchCalculator('budget');">50/30/20 Rule</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav-col">
+          <span class="footer-col-title">Market Advice</span>
+          <ul class="footer-links">
+            <li class="footer-link-item"><a href="#" onclick="event.preventDefault(); app.readArticle(1)">Stock Selection Guides</a></li>
+            <li class="footer-link-item"><a href="#" onclick="event.preventDefault(); app.readArticle(2)">Compounding Secrets</a></li>
+            <li class="footer-link-item"><a href="#" onclick="event.preventDefault(); app.readArticle(3)">Safe Withdrawal SWR</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 FinanceToolsHub. All rights reserved. Made for financial intelligence.</span>
+        <span>SEO Optimized | Schema Structured | Fully Responsive</span>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- Full Screen Glassmorphic Article modal -->
+  <div id="article-reader-modal" class="article-modal" onclick="app.closeArticle(event)">
+    <div class="modal-content-container" onclick="event.stopPropagation()">
+      <header class="modal-header-nav">
+        <div class="nav-brand" style="cursor: default;">
+          <div class="brand-logo">F</div>
+          <span class="brand-name" style="font-size: 1.15rem;">FinanceToolsHub Insight</span>
+        </div>
+        <button class="modal-close-btn" onclick="app.closeArticle(event)">&times;</button>
+      </header>
+      <div class="modal-body-scroll" id="modal-article-body">
+        <!-- Populated via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Mathematical engine -->
+  <script src="calculators.js"></script>
+  <!-- Main Controller script -->
+  <script src="app.js"></script>
+</body>
+</html>
